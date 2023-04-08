@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mappers>
+  <mapper name="GuildMapper">
+    <resultMap protobuf_message="tutorial.Guild">
+      <id property="id" column="id"/>
+      <result property="name" column="name"/>
+      <collection property="playerInfoList" protobuf_message="tutorial.Player">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+          <collection property="" protobuf_message="tutorial.Weapon">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+          </collection>
+      </collection>
+    </resultMap>
+    <query>
+      SELECT
+        t1.guild_id,
+        t1.guild_name,
+        t1.player_id,
+        t1.player_name,
+        t1.player_gender,
+        t2.weapon_id,
+        t2.weapon_name
+      FROM 
+         (
+            SELECT
+                tb_guild.id AS guild_id,
+                tb_guild.`name` AS guild_name,
+                player_guild.player_id,
+                player_guild.player_name,
+                player_guild.player_gender
+            FROM
+                tb_guild
+            LEFT JOIN (
+                SELECT
+                    tb_player_guild.guild_id,
+                    tb_player.id AS player_id,
+                    tb_player.`name` AS player_name,
+                    tb_player.gender AS player_gender
+                FROM
+                    tb_player,
+                    tb_player_guild
+                WHERE
+                    tb_player.id = tb_player_guild.player_id
+            ) AS player_guild ON tb_guild.id = player_guild.guild_id
+        ) AS t1 LEFT JOIN
+        (
+            SELECT
+                tb_player.id AS player_id,
+                tb_player.`name` AS player_name,
+                tb_player.gender AS player_gender,
+                player_weapon.weapon_id,
+                player_weapon.weapon_name
+            FROM
+                tb_player
+            LEFT JOIN (
+                SELECT
+                    tb_player_weapon.player_id,
+                    tb_weapon.id AS weapon_id,
+                    tb_weapon.`name` AS weapon_name
+                FROM
+                    tb_weapon,
+                    tb_player_weapon
+                WHERE
+                    tb_weapon.id = tb_player_weapon.weapon_id
+            ) AS player_weapon ON tb_player.id = player_weapon.player_id
+        ) AS t2 ON t1.player_id = t2.player_id;
+    </query>
+  </mapper>
+
+  <mapper name="Player">
+    <resultMap protobuf_message="tutorial.Player">
+      <id property="id" column="id"/>
+      <result property="name" column="name"/>
+      <result property="gender" column="gender"/>
+      <collection property="weaponList" protobuf_message="tutorial.Weapon">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+      </collection>
+    </resultMap>
+  </mapper>
+</mappers>

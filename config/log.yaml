@@ -1,0 +1,16 @@
+logs:
+    - name: root
+      level: debug
+      format: '%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T%F%T[%p]%T[%c]%T%f:%l%T%m%n'
+      appenders:
+          - type: FileLogAppender
+            file: '/programs/nemo/tests/log_file/root.txt'
+          - type: StdoutLogAppender
+    - name: system
+      level: debug
+      format: '%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T%F%T[%p]%T[%c]%T%f:%l%T%m%n'
+      appenders:
+          - type: FileLogAppender
+            file: '/programs/nemo/tests/log_file/system.txt'
+            #format: '%d%T%c%T[%p]%T%m%n'
+          #- type: StdoutLogAppender

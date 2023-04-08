@@ -1,0 +1,8 @@
+databases:
+  - name: mysql
+    dbname: gamedb
+    connections: 2
+    charset: utf8
+    user: nemo
+    password: 123456
+# see https://soci.sourceforge.net/doc/release/4.0/backends/mysql/
