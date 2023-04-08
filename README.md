@@ -4,7 +4,8 @@
 + soci
 + protobuf
 + jsoncpp
-+ tinyxml2
++ tinyxml2  
+
 #编译
 + 支持C++20的编译器  
 + Linux2.5
